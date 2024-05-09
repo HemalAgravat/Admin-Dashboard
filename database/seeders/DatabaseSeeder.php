@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Company;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,6 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-     $this->call(AdminTableSeeder::class);
+        Company::factory(5)->create()->each(function ($company) {
+            $company->employees()->saveMany(Employee::factory(5)->create(['company_id' => $company->id]));
+        });
     }
+
 }

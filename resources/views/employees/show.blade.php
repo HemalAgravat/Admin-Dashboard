@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<a href="{{ route('employees.show', $employee->id) }}">View Details</a>
 
   <div class="container">
        
