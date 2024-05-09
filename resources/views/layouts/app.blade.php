@@ -35,6 +35,8 @@
                        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
                        </li>
         </div>
+        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+
         </div>
     </nav>
     <div class="container mt-4">

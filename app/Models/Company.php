@@ -8,9 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     use SoftDeletes;
-    // protected $dates = ['deleted_at'];
     protected $fillable = [
         'name', 'email', 'logo', 'website', 'status'
         

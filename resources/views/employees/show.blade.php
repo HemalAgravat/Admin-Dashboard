@@ -5,11 +5,6 @@
   <div class="container">
        
         <h2>Employees</h2>
-        <ul>
-            {{-- @foreach ($company->employees as $employee)
-                <li>{{ $employee->name }}</li>
-            @endforeach --}}
-        </ul>
     </div>
 <div class="mb-3">
     <label for="first_name" class="form-label">First Name</label>
