@@ -3,8 +3,8 @@
 @section('content')
     <h1>Companies</h1>
 
+    
     <a href="{{ route('companies.create') }}" class="btn btn-primary mb-3">Create New Company</a>
-
     @if($companies->isEmpty())
         <p>No companies found.</p>
     @else
