@@ -27,4 +27,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('employees', EmployeeController::class);
+    route::get('/boot',function () {
+        return view('bootfile.index');
+    })->name('dashboard');
 });

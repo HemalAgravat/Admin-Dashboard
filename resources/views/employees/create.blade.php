@@ -1,7 +1,12 @@
-@extends('layouts.app')
-
-@section('content')
-    <h1>Create Employee</h1>
+@include('bootfile.nav')
+            <div id="content-page" class="content-page">
+                <div class="container-fluid">
+                   <div class="row">
+                      <div class="col-sm-12">
+                            <div class="iq-card" style="padding: 40px;">
+                               <div class="col-10" style="margin-left: 100px;">
+                                  <div class="iq-header-title">
+                                 <h2 style="color: rgb(251, 134, 88)">Create Employee</h2>
 
     <form action="{{ route('employees.store') }}" method="POST">
         @csrf
@@ -52,4 +57,4 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-@endsection
+

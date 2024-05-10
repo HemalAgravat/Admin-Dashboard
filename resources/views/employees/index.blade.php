@@ -1,12 +1,16 @@
-@extends('layouts.app')
-
-@section('content')
-<h1>Employees</h1>
-<a href="{{ route('employees.create') }}" class="btn btn-primary mb-3">Create Employee</a>
-
-<table class="table">
-    <thead>
-        <tr>
+@include('bootfile.nav')
+            <div id="content-page" class="content-page">
+                <div class="container-fluid">
+                   <div class="row">
+                      <div class="col-sm-12">
+                            <div class="iq-card" >
+                               <div class="col-13" style="margin-left: 50px margin-right: 50px ;">
+                                  <div class="iq-header-title">
+                                    <h2 style="color: rgb(251, 134, 88); margin-left:40px">Employees List</h2>
+                                    <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3" style="margin-left:40px">Create Employee</a>
+                      <table class="table">
+                       <thead>
+                       <tr>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -40,4 +44,4 @@
   <div class="pagination">
     {{ $employees->links() }}
 </div>
-@endsection
+

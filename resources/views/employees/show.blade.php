@@ -1,11 +1,12 @@
-@extends('layouts.app')
-
-@section('content')
-
-  <div class="container">
-       
-        <h2>Employees</h2>
-    </div>
+@include('bootfile.nav')
+            <div id="content-page" class="content-page">
+                <div class="container-fluid">
+                   <div class="row">
+                      <div class="col-sm-12">
+                            <div class="iq-card" style="padding: 40px;">
+                               <div class="col-10" style="margin-left: 100px;">
+                                  <div class="iq-header-title">
+                                 <h2 style="color: rgb(251, 134, 88)"> Employee</h2>
 <div class="mb-3">
     <label for="first_name" class="form-label">First Name</label>
     <p>{{ $employee->first_name }}</p>
@@ -32,4 +33,4 @@
     @method('DELETE')
     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
 </form>
-@endsection
+

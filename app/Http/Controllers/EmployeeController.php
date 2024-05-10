@@ -28,7 +28,7 @@ class EmployeeController extends Controller
             'last_name' => 'required|string|max:255',
             'company_id' => 'required|exists:companies,id',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|size:10',
         ]);
 
         Employee::create($validatedData);
@@ -51,11 +51,11 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         $validatedData = $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'company_id' => 'required',
-            'email' => 'nullable|email',
-            'phone' => 'nullable',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'company_id' => 'required|exists:companies,id',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|size:10',
         ]);
 
         $employee->update($validatedData);

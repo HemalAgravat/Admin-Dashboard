@@ -21,7 +21,7 @@ class LoginController extends Controller
         if (Auth::attempt($value
         )) {
             // Authentication passed...
-            return redirect('companies'); // Redirect to dashboard after successful login
+            return redirect('/boot'); // Redirect to dashboard after successful login
         }
     
         $errors = [];

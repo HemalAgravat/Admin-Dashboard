@@ -1,11 +1,16 @@
 <!-- employees/show.blade.php -->
 
-@extends('layouts.app')
+@include('bootfile.nav')
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-sm-12">
+                <div class="iq-card">
+                   {{-- <div class="iq-card-header d-flex justify-content-between"> --}}
+                      <div class="iq-header-title">
+                        <h2 style="color: rgb(251, 134, 88); margin-left:40px">Company Employees List</h2>
 
-@section('content')
-    <div class="container">
-        <h1>Employees</h1>
-        <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3">Create Employee</a>
+        <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3" style="margin-left:40px">Create Employee</a>
 
         <table class="table">
             <thead>
@@ -40,4 +45,3 @@
             </tbody>
         </table>
     </div>
-@endsection
