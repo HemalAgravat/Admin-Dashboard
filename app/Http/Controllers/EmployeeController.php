@@ -5,13 +5,31 @@ use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::paginate(10);
-        return view('employees.index', compact('employees'));
+        $employees = Employee::query();
+
+        if ($request->ajax()) { // Corrected method call
+            return DataTables::of($employees)
+                ->addIndexColumn()
+                ->addColumn("action", function ($row) {
+                    $btn = "<a class='btn btn-sm btn-info' href=" . route("employees.show", $row->id) . "> View </a>";
+                    $btn .= "<a  class='btn btn-sm btn-primary 'href=" . route("employees.edit", $row->id) . "> Edit </a>";
+                    $btn .= '<form action="' . route('employees.destroy', $row->id) . '" method="POST" class="d-inline">
+                        ' . method_field('DELETE') . csrf_field() . '
+                        <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this employee?\')"> Delete</button>
+                    </form>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    
+        return view('employees.index');
     }
 
     public function create()
@@ -36,11 +54,11 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully!');
     }
 
-    public function edit(String $employee)
+    public function edit(string $employee)
     {
         $companies = Company::all();
         $employee = Employee::find($employee);
-       return view('employees.edit', compact('employee' , 'companies'));
+        return view('employees.edit', compact('employee', 'companies'));
     }
     public function show($id)
     {
@@ -60,13 +78,13 @@ class EmployeeController extends Controller
 
         $employee->update($validatedData);
 
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully!');
+        return redirect()->route('employees.index')->with('edit', 'Employee updated successfully!');
     }
 
     public function destroy(Employee $employee)
     {
         $employee->delete();
 
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully!');
+        return redirect()->route('employees.index')->with('delete', 'Employee deleted successfully!');
     }
 }

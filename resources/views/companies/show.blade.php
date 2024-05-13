@@ -18,7 +18,7 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>Company_id</th>
+                    <th>Company_name</th>
                     <th>Phone</th>
                     <th>Actions</th>
                 </tr>
@@ -29,7 +29,7 @@
                         <td>{{ $employee->first_name }}</td>
                         <td>{{ $employee->last_name }}</td>
                         <td>{{ $employee->email }}</td>
-                        <td>{{ $employee->company_id }}</td>
+                        <td>{{ $employee->name }}</td>
                         <td>{{ $employee->phone }}</td>
                         <td>
                             <a href="{{ route('employees.show', $employee->id) }}" class="btn btn-sm btn-info">View</a>

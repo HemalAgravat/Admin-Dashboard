@@ -16,8 +16,9 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::paginate(10); // Paginate the companies, with 5 companies per page
-        return view('companies.index', compact('companies'));
+        $companies = Company::paginate(10);// Paginate the companies, with 10   companies per page
+        $com=$companies->firstItem();
+        return view('companies.index', compact('companies','com'));
     }
 
     public function create()
@@ -60,8 +61,7 @@ class CompanyController extends Controller
             'email' => $company->email,
         ];
         Mail::to($company->email)->send(new WelcomeEmail($mailData));
-    
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('success', 'Company added successfully');
         
     }
 
@@ -92,15 +92,12 @@ class CompanyController extends Controller
             $request->logo->storeAs('public/logo', $filestore);
             $company->logo = $filestore;
         }
-
-
-
         // Store the filename in the 'logo' column
         $company->website = $request->website;
         $company->status = $request->status;
         $company->update();
 
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('edit', 'Company updated successfully');
     }
 
     public function destroy($id)
@@ -109,6 +106,6 @@ class CompanyController extends Controller
         $company->delete();
         $company->status = 'inactive';
         $company->save();
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('delete', 'Company Deleted successfully');
     }
 }
