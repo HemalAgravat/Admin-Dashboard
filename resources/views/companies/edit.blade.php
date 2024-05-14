@@ -103,6 +103,15 @@
                         <div class="col-10" style="margin-left: 100px;">
                             <div class="iq-header-title">
                                 <h2 style="color: rgb(251, 134, 88)">Edit Company</h2>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <form action="{{ route('companies.update', $company->id) }}" method="POST"
                                     enctype="multipart/form-data"onsubmit="return validateForm()">
                                     @csrf
@@ -111,14 +120,14 @@
                                         <label for="name">Name:</label>
                                         <input type="text" name="name" id="name" class="form-control"
                                             value="{{ $company->name }}">
-                                            <span id="name_error" style="color: rgb(251, 134, 88)"></span>
+                                        <span id="name_error" style="color: rgb(251, 134, 88)"></span>
 
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email:</label>
                                         <input type="email" name="email" id="email" class="form-control"
                                             value="{{ $company->email }}">
-                                            <span id="email_error" style="color: rgb(251, 134, 88)"></span>
+                                        <span id="email_error" style="color: rgb(251, 134, 88)"></span>
 
                                     </div>
                                     <div class="form-group">
@@ -127,8 +136,8 @@
                                             accept="image/*">
                                         <img src="{{ asset('/storage/logo/' . $company->logo) }}" alt="Company Logo"
                                             style="max-width: 100px; max-height: 100px;">
-                                            @error('logo')
-                                            {{$message}}
+                                        @error('logo')
+                                            {{ $message }}
                                         @enderror
                                         <span id="logo_error" style="color: rgb(251, 134, 88)"></span>
 
@@ -137,10 +146,10 @@
                                         <label for="website">Website:</label>
                                         <input type="url" name="website" id="website" class="form-control"
                                             value="{{ $company->website }}">
-                                            @error('website')
-                                                {{$message}}
-                                            @enderror
-                                            <span id="website_error" style="color: rgb(251, 134, 88)"></span>
+                                        @error('website')
+                                            {{ $message }}
+                                        @enderror
+                                        <span id="website_error" style="color: rgb(251, 134, 88)"></span>
 
                                     </div>
                                     <div class="form-group">

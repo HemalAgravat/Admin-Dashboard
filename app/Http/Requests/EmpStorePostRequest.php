@@ -25,7 +25,11 @@ class EmpStorePostRequest extends FormRequest
             'first_name' => 'required|string|max:255' ,
             'last_name' => 'required|string|max:255',
             'company_id' => 'required|exists:companies,id',
-            'email' => 'required|email|max:255',
+            'email' => [
+                'required',
+                'email',
+                'unique:companies,email', // Ensures email is unique in companies table
+            ],
             'phone' => 'required|string|size:10',
         ];
     }

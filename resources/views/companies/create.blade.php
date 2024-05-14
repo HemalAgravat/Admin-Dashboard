@@ -105,6 +105,15 @@
                         <div class="col-10" style="margin-left: 100px;">
                             <div class="iq-header-title">
                                 <h2 style="color: rgb(251, 134, 88)">Create New Company</h2>
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                                 <form action="{{ route('companies.store') }}" method="POST"
                                     enctype="multipart/form-data" style="margin: auto"onsubmit="return validateForm()">
                                     @csrf

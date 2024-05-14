@@ -18,7 +18,15 @@
                         <div class="col-10" style="margin-left: 100px;">
                             <div class="iq-header-title">
                                 <h2 style="color: rgb(251, 134, 88)">Create Employee</h2>
-
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                                 <form action="{{ route('employees.store') }}" method="POST" id="employee-form"
                                     onsubmit="return validateForm()">
                                     @csrf
@@ -142,7 +150,8 @@
                                             isValid = false;
                                         }
 
-                                        var phoneRegex = /^\d{10}$/                                        if (phone.trim() !== "" && !phoneRegex.test(phone)) {
+                                        var phoneRegex = /^\d{10}$/
+                                         if (phone.trim() !== "" && !phoneRegex.test(phone)) {
                                             phoneError.textContent = "Please enter a valid 10-digit phone number";
                                             isValid = false;
                                         } else if (phone.trim() === "") {

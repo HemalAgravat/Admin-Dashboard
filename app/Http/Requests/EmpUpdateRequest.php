@@ -28,4 +28,11 @@ class EmpUpdateRequest extends FormRequest
             'phone' => 'required|string|size:10',
         ];
     }
+    public function messages()
+    {
+        return [
+            'email.unique' => 'The email address is already in use.', // Custom error message for email uniqueness
+        ];
+    }
+
 }
