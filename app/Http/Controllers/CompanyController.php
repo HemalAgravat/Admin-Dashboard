@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ComUpdateRequest;
+use App\Http\Requests\StorePostRequest;
 use App\Mail\WelcomeEmail;
 use App\Mail\WelcomeMail;
 use App\Models\Company;
@@ -27,40 +29,24 @@ class CompanyController extends Controller
         return view('companies.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
          // Validate the request data
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255|unique:companies',
-        'logo' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100', // Adjust maximum file size as needed
-        'website' => 'nullable|url|max:255',
-        'status' => 'required|in:active,inactive',
-        'created_Date' => 'required|date',
-    ]);
-
-    // If validation fails, return the validation errors
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
-        // Validation may be added here
-
+        $validator = $request->validated();
         $filestore = 'logo' . time() . '.' . $request->logo->getClientOriginalExtension();
         $request->logo->storeAs('public/logo', $filestore);
 
-        $company = new Company();
-        $company->name = $request->name;
-        $company->email = $request->email;
-        $company->logo = $filestore; // Store the filename in the 'logo' column
-        $company->website = $request->website;
-        $company->status = $request->status;
-        $company->save();
+    
+        $validator['logo'] = $filestore; // Store the filename in the 'logo' column
+        Company::create($validator);
+   
         
         $mailData = [
-            'name' => $company->name,
-            'email' => $company->email,
+            'name' => $validator['name'],
+            'email' => $validator['email'],
         ];
-        Mail::to($company->email)->send(new WelcomeEmail($mailData));
+        Mail::to($validator['email'])->send(new WelcomeEmail($mailData));
+        
         return redirect()->route('companies.index')->with('success', 'Company added successfully');
         
     }
@@ -81,22 +67,19 @@ class CompanyController extends Controller
         return view('companies.edit', compact('company'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ComUpdateRequest $request,$id)
     {
+        $validator = $request->validated();
         $company = Company::findOrFail($id);
-        $company->name = $request->name;
-        $company->email = $request->email;
+      
         // Validation may be added here
         if ($request->hasFile('logo')) {
             $filestore = 'logo' . time() . '.' . $request->logo->getClientOriginalExtension();
             $request->logo->storeAs('public/logo', $filestore);
-            $company->logo = $filestore;
+            $validator['logo'] = $filestore;
         }
         // Store the filename in the 'logo' column
-        $company->website = $request->website;
-        $company->status = $request->status;
-        $company->update();
-
+        $company->update($validator);
         return redirect()->route('companies.index')->with('edit', 'Company updated successfully');
     }
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Employees-List</title>
     <style>
         .msgpopup {
             position: fixed;
@@ -46,7 +46,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="iq-card">
-                    <div class="col-13" style="margin-left: 50px; margin-right: 50px;">
+                    <div class="col-13" style="margin-left: 20px; margin-right: 20px;">
                         <div class="iq-header-title">
                             <h2 style="color: rgb(251, 134, 88); margin-left: 40px;">Employees List</h2>
                             <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3"
@@ -57,13 +57,13 @@
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Company</th>
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
@@ -94,6 +94,9 @@
                 {
                     data: 'last_name',
                     name: 'last_name'
+                },{
+                    data: 'company',
+                    name: 'company'
                 },
                 {
                     data: 'email',

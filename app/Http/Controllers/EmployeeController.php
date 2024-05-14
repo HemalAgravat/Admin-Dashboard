@@ -1,6 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ComUpdateRequest;
+use App\Http\Requests\EmpStorePostRequest;
+use App\Http\Requests\EmpUpdateRequest;
 use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -16,6 +19,9 @@ class EmployeeController extends Controller
         if ($request->ajax()) { // Corrected method call
             return DataTables::of($employees)
                 ->addIndexColumn()
+                ->addColumn(('company' ), function (Employee $employee) {
+                    return $employee->company->name;
+                })
                 ->addColumn("action", function ($row) {
                     $btn = "<a class='btn btn-sm btn-info' href=" . route("employees.show", $row->id) . "> View </a>";
                     $btn .= "<a  class='btn btn-sm btn-primary 'href=" . route("employees.edit", $row->id) . "> Edit </a>";
@@ -39,15 +45,9 @@ class EmployeeController extends Controller
         return view('employees.create', compact('com'));
     }
 
-    public function store(Request $request)
+    public function store(EmpStorePostRequest $request)
     {
-        $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|size:10',
-        ]);
+        $validatedData = $request->validated();
 
         Employee::create($validatedData);
 
@@ -66,23 +66,20 @@ class EmployeeController extends Controller
         return view('employees.show', compact('employee'));
     }
 
-    public function update(Request $request, Employee $employee)
+    public function update(EmpUpdateRequest $request,$id)
     {
-        $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|size:10',
-        ]);
-
-        $employee->update($validatedData);
+      
+        $validator = $request->validated();
+        $employee = Employee::findOrFail($id);
+      
+        $employee->update($validator);
 
         return redirect()->route('employees.index')->with('edit', 'Employee updated successfully!');
     }
 
-    public function destroy(Employee $employee)
+    public function destroy($employee)
     {
+        $employee = Employee::find($employee);
         $employee->delete();
 
         return redirect()->route('employees.index')->with('delete', 'Employee deleted successfully!');
