@@ -16,9 +16,9 @@
                     <div class="iq-card">
                         {{-- <div class="iq-card-header d-flex justify-content-between"> --}}
                         <div class="iq-header-title">
-                            <h2 style="color: rgb(251, 134, 88); margin-left:40px">Company Employees List</h2>
-                            <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3"
-                                style="margin-left:40px">Create Employee</a>
+                            <h2 style="color: rgb(251, 134, 88); margin-left:40px; margin-bottom:20px">Company Employees List</h2>
+                            {{-- <a href="{{ route('employees.create') }}" class="btn btn-primary mb-3"
+                                style="margin-left:40px">Create Employee</a> --}}
 
                             <table class="table">
                                 <thead>

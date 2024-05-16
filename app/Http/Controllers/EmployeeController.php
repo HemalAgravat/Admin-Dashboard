@@ -54,8 +54,9 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully!');
     }
 
-    public function edit(string $employee)
+    public function edit(string $employee ,Request $request)
     {
+      
         $companies = Company::all();
         $employee = Employee::find($employee);
         return view('employees.edit', compact('employee', 'companies'));
@@ -66,22 +67,36 @@ class EmployeeController extends Controller
         return view('employees.show', compact('employee'));
     }
 
-    public function update(EmpUpdateRequest $request,$id)
+    public function update(EmpUpdateRequest $request, $id)
     {
-      
-        $validator = $request->validated();
+        // Validate the request data
+        $validatedData = $request->validated();
+        
+        // Find the employee to be updated
         $employee = Employee::findOrFail($id);
-      
-        $employee->update($validator);
-
+        
+        // Check if the provided email already exists for another employee
+        $existingEmployee = Employee::where('email', $validatedData['email'])
+                                      ->where('id', '!=', $id)
+                                      ->first();
+        
+        // If an employee with the same email exists and has a different ID,
+        // then return with an error message
+        if ($existingEmployee) {
+            return redirect()->back()->withErrors(['email' => 'The email address is already taken.'])->withInput();
+        }
+        
+        // Update the employee record
+        $employee->update($validatedData);
+    
         return redirect()->route('employees.index')->with('edit', 'Employee updated successfully!');
     }
-
+    
     public function destroy($employee)
     {
         $employee = Employee::find($employee);
         $employee->delete();
 
-        return redirect()->route('employees.index')->with('delete', 'Employee deleted successfully!');
+        return redirect()->back()->with('delete', 'Employee deleted successfully!');
     }
 }

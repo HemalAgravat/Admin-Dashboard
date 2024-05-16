@@ -33,6 +33,11 @@ class CompanyController extends Controller
     {
          // Validate the request data
         $validator = $request->validated();
+        $existingNameCompany = Company::where('name', $validator['name'])
+        ->first();
+        if ($existingNameCompany) {
+            return redirect()->back()->withErrors(['name' => 'The company name is already taken.'])->withInput();
+        }
         $filestore = 'logo' . time() . '.' . $request->logo->getClientOriginalExtension();
         $request->logo->storeAs('public/logo', $filestore);
 
@@ -56,6 +61,7 @@ class CompanyController extends Controller
     $company = DB::table('companies')
     ->join('employees','companies.id','=','employees.company_id')
     ->where('company_id', $id)
+    ->where('employees.deleted_at',null)
     ->get();
     return view('companies.show', compact('company'));
 
@@ -71,6 +77,15 @@ class CompanyController extends Controller
     {
         $validator = $request->validated();
         $company = Company::findOrFail($id);
+        $existingCompany = Company::where('email', $validator['email'])
+        ->where('id', '!=', $id)
+        ->first();
+
+// If an employee with the same email exists and has a different ID,
+// then return with an error message
+if ($existingCompany) {
+return redirect()->back()->withErrors(['email' => 'The email address is already taken.'])->withInput();
+}
       
         // Validation may be added here
         if ($request->hasFile('logo')) {
@@ -89,6 +104,6 @@ class CompanyController extends Controller
         $company->delete();
         $company->status = 'inactive';
         $company->save();
-        return redirect()->route('companies.index')->with('delete', 'Company Deleted successfully');
+        return redirect()->back()->with('delete', 'Company Deleted successfully');
     }
 }

@@ -10,90 +10,80 @@
 </head>
 
 <body>
-    <script>
-        function validateForm() {
-            var name = document.getElementById("name").value;
-            var email = document.getElementById("email").value;
-            var logo = document.getElementById("logo").files[0];
-            var website = document.getElementById("website").value;
-            var status = document.getElementById("status").value;
-            var createdDate = document.getElementById("created_at").value;
+   <script>
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var logo = document.getElementById("logo").files[0];
+        var website = document.getElementById("website").value;
+        // var status = document.getElementById("status").value;
+        // var createdDate = document.getElementById("created_at").value;
 
-            var nameError = document.getElementById("name_error");
-            var emailError = document.getElementById("email_error");
-            var logoError = document.getElementById("logo_error");
-            var websiteError = document.getElementById("website_error");
-            var statusError = document.getElementById("status_error");
-            var createdDateError = document.getElementById("created_at_error");
+        var nameError = document.getElementById("name_error");
+        var emailError = document.getElementById("email_error");
+        var logoError = document.getElementById("logo_error");
+        var websiteError = document.getElementById("website_error");
+        // var statusError = document.getElementById("status_error");
+        // var createdDateError = document.getElementById("created_at_error");
 
-            nameError.textContent = "";
-            emailError.textContent = "";
-            logoError.textContent = "";
-            websiteError.textContent = "";
-            statusError.textContent = "";
-            createdDateError.textContent = "";
+        nameError.textContent = "";
+        emailError.textContent = "";
+        logoError.textContent = "";
+        websiteError.textContent = "";
+        // statusError.textContent = "";
+        // createdDateError.textContent = "";
 
-            var isValid = true;
+        var isValid = true;
 
-            if (name.trim() === "") {
-                nameError.textContent = "Please enter Name";
-                isValid = false;
-            }
-
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email.trim() !== "" && !emailRegex.test(email)) {
-                emailError.textContent = "Please enter a valid email address";
-                isValid = false;
-            } else if (email.trim() === "") {
-                emailError.textContent = "Please enter an email address";
-                isValid = false;
-            }
-            if (logo) {
-                var logoSize = logo.size;
-                var minSize = 100 * 100; // Minimum size (100x100)
-                if (logoSize < minSize) {
-                    logoError.textContent = "Minimum logo size is 100x100";
-                    isValid = false;
-                }
-            } else {
-                logoError.textContent = "Please upload a logo";
-                isValid = false;
-            }
-
-            if (website.trim() === "") {
-                websiteError.textContent = "Please enter Website";
-                isValid = false;
-            } else {
-                // Validate if website is a valid URL
-                var urlRegex =
-                    /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-                if (!urlRegex.test(website)) {
-                    websiteError.textContent = "Please enter a valid URL";
-                    isValid = false;
-                }
-            }
-
-            if (status.trim() === "") {
-                statusError.textContent = "Please select Status";
-                isValid = false;
-            }
-
-            if (createdDate.trim() === "") {
-                createdDateError.textContent = "Please enter Created Date";
-                isValid = false;
-            } else {
-                // Validate if created date is not in the future
-                var currentDate = new Date();
-                var enteredDate = new Date(createdDate);
-                if (enteredDate > currentDate) {
-                    createdDateError.textContent = "Created Date cannot be in the future";
-                    isValid = false;
-                }
-            }
-
-            return isValid;
+        if (name.trim() === "") {
+            nameError.textContent = "Please enter Name";
+            isValid = false;
         }
-    </script>
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email.trim() !== "" && !emailRegex.test(email)) {
+            emailError.textContent = "Please enter a valid email address";
+            isValid = false;
+        } else if (email.trim() === "") {
+            emailError.textContent = "Please enter an email address";
+            isValid = false;
+        }
+        if (!logo) {
+            logoError.textContent = "Please upload a logo";
+            isValid = false;
+        } else {
+            var logoSize = logo.size;
+            var minSize = 100 * 100; // Minimum size (100x100)
+            if (logoSize < minSize) {
+                logoError.textContent = "Minimum logo size is 100x100";
+                isValid = false;
+            }
+        }
+
+        if (website.trim() === "") {
+            websiteError.textContent = "Please enter Website";
+            isValid = false;
+        } else {
+            // Validate if website is a valid URL
+            var urlRegex =
+                /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+            if (!urlRegex.test(website)) {
+                websiteError.textContent = "Please enter a valid URL";
+                isValid = false;
+            }
+        }
+
+        // if (status.trim() === "") {
+        //     statusError.textContent = "Please select Status";
+        //     isValid = false;
+        // }
+
+        
+
+        return isValid;
+    }
+</script>
+
 
     <div id="content-page" class="content-page">
         <div class="container-fluid">
@@ -127,6 +117,10 @@
                                         <label for="email">Email:</label>
                                         <input type="email" name="email" id="email" class="form-control"
                                             value="{{ $company->email }}">
+                                        {{-- @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror --}}
+
                                         <span id="email_error" style="color: rgb(251, 134, 88)"></span>
 
                                     </div>
@@ -152,19 +146,7 @@
                                         <span id="website_error" style="color: rgb(251, 134, 88)"></span>
 
                                     </div>
-                                    <div class="form-group">
-                                        <label for="status">Status:</label>
-                                        <select name="status" id="status" class="form-control">
-                                            <option value="active" {{ $company->status == 'active' ? 'selected' : '' }}>
-                                                Active
-                                            </option>
-                                            <option value="inactive"
-                                                {{ $company->status == 'inactive' ? 'selected' : '' }}>
-                                                Inactive</option>
-                                        </select>
-                                        <span id="ststus_error" style="color: rgb(251, 134, 88)"></span>
-
-                                    </div>
+                                    
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </form>
                             </div>

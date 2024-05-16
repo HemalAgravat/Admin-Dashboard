@@ -11,19 +11,19 @@
         function validateForm() {
             var firstName = document.getElementById("first_name").value;
             var lastName = document.getElementById("last_name").value;
-            var company = document.getElementById("company_id").value;
+            // var company = document.getElementById("company_id").value;
             var email = document.getElementById("email").value;
             var phone = document.getElementById("phone").value;
 
             var firstNameError = document.getElementById("first_name_error");
             var lastNameError = document.getElementById("last_name_error");
-            var companyError = document.getElementById("company_id_error");
+            // var companyError = document.getElementById("company_id_error");
             var emailError = document.getElementById("email_error");
             var phoneError = document.getElementById("phone_error");
 
             firstNameError.textContent = "";
             lastNameError.textContent = "";
-            companyError.textContent = "";
+            // companyError.textContent = "";
             emailError.textContent = "";
             phoneError.textContent = "";
 
@@ -39,10 +39,10 @@
                 isValid = false;
             }
 
-            if (company.trim() === "") {
-                companyError.textContent = "Please select a Company";
-                isValid = false;
-            }
+            // if (company.trim() === "") {
+            //     companyError.textContent = "Please select a Company";
+            //     isValid = false;
+            // }
             var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (email.trim() !== "" && !emailRegex.test(email)) {
                 emailError.textContent = "Please enter a valid email address";
@@ -66,8 +66,9 @@
     </script>
 
 </head>
+
 <body>
-   
+
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="row">
@@ -93,7 +94,7 @@
                                         <span id="last_name_error" style="color: rgb(65, 1, 156)"></span>
 
                                     </div>
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3">
                                         <label for="company_id" class="form-label">Company</label>
                                         <select class="form-select" id="company_id" name="company_id">
                                             <option value="">Select Company</option>
@@ -105,11 +106,15 @@
                                         </select>
                                         <span id="company_id_error" style="color: rgb(65, 1, 156)"></span>
 
-                                    </div>
+                                    </div> --}}
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control" id="email" name="email"
                                             value="{{ $employee->email }}">
+                                        @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+
                                         <span id="email_error" style="color: rgb(65, 1, 156)"></span>
                                     </div>
                                     <div class="mb-3">
@@ -120,6 +125,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </form>
+
                             </div>
                         </div>
                     </div>
