@@ -106,4 +106,5 @@ return redirect()->back()->withErrors(['email' => 'The email address is already 
         $company->save();
         return redirect()->back()->with('delete', 'Company Deleted successfully');
     }
+    
 }

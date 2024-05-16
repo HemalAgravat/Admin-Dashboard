@@ -2,14 +2,12 @@
 @include('bootfile.nav')
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Create Company</title>
 </head>
-
 <body>
     <script>
         function validateForm() {
@@ -91,7 +89,6 @@
                     isValid = false;
                 }
             }
-
             return isValid;
         }
     </script>
@@ -120,25 +117,25 @@
                                         <label for="name">Name:</label>
                                         <input type="text" name="name" id="name" class="form-control"
                                             value="{{ old('name') }}">
-                                        <span id="name_error" style="color: red"></span>
+                                        <span id="name_error" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email:</label>
                                         <input type="email" name="email" id="email" class="form-control"
                                             value="{{ old('email') }}">
-                                        <span id="email_error" style="color: red"></span>
+                                        <span id="email_error" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="logo">Logo (minimum 100x100):</label>
                                         <input type="file" name="logo" id="logo" class="form-control-file"
                                             accept="image/*">
-                                        <span id="logo_error" style="color: red"></span>
+                                        <span id="logo_error" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="website">Website:</label>
                                         <input type="url" name="website" id="website" class="form-control"
                                             value="{{ old('website') }}">
-                                        <span id="website_error" style="color: red"></span>
+                                        <span id="website_error" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="status">Status:</label>
@@ -147,13 +144,13 @@
                                                 Active</option>
                                             {{-- <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option> --}}
                                         </select>
-                                        <span id="status_error" style="color: red"></span>
+                                        <span id="status_error" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="created_at">Created Date:</label>
                                         <input type="date" name="created_at" id="created_at" class="form-control"
                                             value="{{ old('created_at') }}">
-                                        <span id="created_at_error" style="color: red"></span>
+                                        <span id="created_at_error" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Create</button>
                                 </form>

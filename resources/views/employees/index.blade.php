@@ -119,7 +119,7 @@
 @if (session()->has('success'))
 <div class="msgpopup">
     <div
-        class="alert alert-success bg-success text-light border-0 alert-dismissible fade show text-center">
+        class="alert alert-success bg-success text-dark border-0 alert-dismissible fade show text-center">
         {{ session('success') }}
     </div>
 </div>
