@@ -18,16 +18,18 @@ use App\Http\Controllers\EmployeeController;
 */
 
 
-Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/', [LoginController::class, 'login'])->name('login.submit');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
 
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('employees', EmployeeController::class);
-    route::get('/boot',function () {
+    route::get('/',function () {
         return view('bootfile.index');
     })->name('dashboard');
+    Route::put('/trashed{id}', [CompanyController::class, 'showTrashedCompanies'])->name('companies.trashed');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 });

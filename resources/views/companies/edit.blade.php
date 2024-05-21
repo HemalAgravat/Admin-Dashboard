@@ -73,18 +73,9 @@
             }
         }
 
-        // if (status.trim() === "") {
-        //     statusError.textContent = "Please select Status";
-        //     isValid = false;
-        // }
-
-        
-
         return isValid;
     }
 </script>
-
-
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="row">

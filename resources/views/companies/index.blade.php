@@ -30,7 +30,7 @@
         }
 
         @keyframes disappear {
-            0% {
+            10% {
                 opacity: 1;
             }
 
@@ -86,10 +86,11 @@
                                                     <td>{{ $company->created_at }}</td>
                                                     <td>{{ $company->updated_at }}</td>
                                                     <td>
+                                                        @if ($company->status == 'active')
                                                         <a href="{{ route('companies.show', $company->id) }}"
                                                             class="btn btn-sm btn-info">View</a>
                                                         <a href="{{ route('companies.edit', $company->id) }}"
-                                                            class="btn btn-sm btn-warning">Edit</a>
+                                                            class="btn btn-sm btn-primary">Edit</a>
 
                                                         <form action="{{ route('companies.destroy', $company->id) }}"
                                                             method="POST" style="display: inline-block;">
@@ -99,6 +100,17 @@
                                                                 onclick="return confirm('Are you sure?')"
                                                                 style="display: block; margin: 2 auto;">Delete</button>
                                                         </form>
+                                                        @else
+                                                        <form action="{{ route('companies.trashed', $company->id) }}"
+                                                            method="POST" style="display: inline-block;">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit" class="btn btn-warning"
+                                                                onclick="return confirm('Are you sure?')"
+                                                                style="display: block; margin: 2 auto;">Retore</button>
+                                                        </form>
+                                                        @endif
+                                                        
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -134,7 +146,14 @@
                                 </div>
                             @endif
                             </div>
-                            
+                            @if (session()->has('Restore'))
+                            <div class="msgpopup">
+                                <div
+                                    class="alert alert-success bg-warning text-dark border-0 alert-dismissible fade show text-center">
+                                    {{ session('Restore') }}
+                                </div>
+                            </div>
+                        @endif
                         </div>
                     </div>
                 </div>

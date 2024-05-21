@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         Company::factory(5)->create()->each(function ($company) {
             $company->employees()->saveMany(Employee::factory(5)->create(['company_id' => $company->id]));
         });
+        $this->call(AdminTableSeeder::class);
     }
 
 }

@@ -28,8 +28,8 @@ class StorePostRequest extends FormRequest
             'email',
             'unique:companies,email', // Ensures email is unique in companies table
         ],  'logo' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100', // Adjust maximum file size as needed
-        'website' => 'nullable|url|max:255',
-        'status' => 'required|in:active,inactive',
+            'website' => 'nullable|url|max:255',
+            'status' => 'required|in:active,inactive',
         // 'created_Date' => 'required|date',
      
         ];

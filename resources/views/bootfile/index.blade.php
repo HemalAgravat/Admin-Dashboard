@@ -93,6 +93,7 @@
                         <li class="nav-item nav-icon">
                            <a href="#" class="search-toggle iq-waves-effect text-primary rounded">
                            </a>
+                        </li>
                </nav>
             </div>
          </div>
