@@ -26,10 +26,15 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::middleware(['auth'])->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('employees', EmployeeController::class);
-    route::get('/',function () {
+    route::get('/', function () {
         return view('bootfile.index');
     })->name('dashboard');
     Route::put('/trashed{id}', [CompanyController::class, 'showTrashedCompanies'])->name('companies.trashed');
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+
+    Route::fallback(function () {
+        return response()->view('errors.404', [], 404);
+    });
 });
+

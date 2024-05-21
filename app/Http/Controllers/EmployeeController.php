@@ -21,7 +21,7 @@ class EmployeeController extends Controller
     {
         $employees = Employee::query();
 
-        if ($request->ajax()) { // Corrected method call
+        if ($request->ajax()) { //  method call
             return DataTables::of($employees)
                 ->addIndexColumn()
                 ->addColumn(('company'), function (Employee $employee) {
@@ -102,8 +102,6 @@ class EmployeeController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validated();
-
-        // Find the employee to be updated
         $employee = Employee::findOrFail($id);
 
         // Check if the provided email already exists for another employee
