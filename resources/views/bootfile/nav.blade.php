@@ -48,7 +48,7 @@
                <nav class="iq-sidebar-menu">
                   <ul id="iq-sidebar-toggle" class="iq-menu">
                      <li class="active active-menu">
-                      <a href="{{ url('/boot') }}"><i class="las la-house-damage"></i>Dashboard</a>
+                      <a href="{{ url('/') }}"><i class="las la-house-damage"></i>Dashboard</a>
                         
                     </li>
                      <li>
