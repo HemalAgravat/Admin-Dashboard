@@ -53,7 +53,7 @@
             isValid = false;
         } else {
             var logoSize = logo.size;
-            var minSize = 100 * 100; // Minimum size (100x100)
+            var minSize = 10 * 10; // Minimum size (100x100)
             if (logoSize < minSize) {
                 logoError.textContent = "Minimum logo size is 100x100";
                 isValid = false;
