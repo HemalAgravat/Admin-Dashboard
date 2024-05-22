@@ -71,7 +71,7 @@
                         <div class="hover-circle"><i class="ri-arrow-right-s-line"></i></div>
                      </div>
                      <div class="iq-navbar-logo d-flex justify-content-between">
-                        <a href="{{ url('/boot') }}" class="header-logo">
+                        <a href="{{ url('/') }}" class="header-logo">
                            <img src="{{ asset('images/logo.png')}}" class="img-fluid rounded-normal" alt="">
                            <div class="pt-2 pl-2 logo-title">
                               <span class="text-danger text-uppercase">Admin<span class="text-primary ml-1">Dashboard</span></span>
