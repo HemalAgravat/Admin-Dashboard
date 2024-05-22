@@ -53,6 +53,11 @@
                                 <h2 style="color: rgb(251, 134, 88); margin-left:40px">Company List</h2>
                                 <a href="{{ route('companies.create') }}" class="btn btn-primary mb-3"
                                     style="margin-left: 40px">Create New Company</a>
+                                    <form action="{{ route('companies.index') }}" method="GET" class="mb-3">
+                                        <div class="input-group"style="width: 50%;">
+                                            <input type="text" name="search" class="form-control" placeholder="Search companies..." value="{{ request('search') }}">
+                                        </div>
+                                    </form>
                                 @if ($companies->isEmpty())
                                     <p>No companies found.</p>
                                 @else
@@ -87,30 +92,32 @@
                                                     <td>{{ $company->updated_at }}</td>
                                                     <td>
                                                         @if ($company->status == 'active')
-                                                        <a href="{{ route('companies.show', $company->id) }}"
-                                                            class="btn btn-sm btn-info">View</a>
-                                                        <a href="{{ route('companies.edit', $company->id) }}"
-                                                            class="btn btn-sm btn-primary">Edit</a>
+                                                            <a href="{{ route('companies.show', $company->id) }}"
+                                                                class="btn btn-sm btn-info">View</a>
+                                                            <a href="{{ route('companies.edit', $company->id) }}"
+                                                                class="btn btn-sm btn-primary">Edit</a>
 
-                                                        <form action="{{ route('companies.destroy', $company->id) }}"
-                                                            method="POST" style="display: inline-block;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure?')"
-                                                                style="display: block; margin: 2 auto;">Delete</button>
-                                                        </form>
+                                                            <form
+                                                                action="{{ route('companies.destroy', $company->id) }}"
+                                                                method="POST" style="display: inline-block;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger"
+                                                                    onclick="return confirm('Are you sure?')"
+                                                                    style="display: block; margin: 2 auto;">Delete</button>
+                                                            </form>
                                                         @else
-                                                        <form action="{{ route('companies.trashed', $company->id) }}"
-                                                            method="POST" style="display: inline-block;">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <button type="submit" class="btn btn-warning"
-                                                                onclick="return confirm('Are you sure?')"
-                                                                style="display: block; margin: 2 auto;">Retore</button>
-                                                        </form>
+                                                            <form
+                                                                action="{{ route('companies.trashed', $company->id) }}"
+                                                                method="POST" style="display: inline-block;">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="btn btn-warning"
+                                                                    onclick="return confirm('Are you sure?')"
+                                                                    style="display: block; margin: 2 auto;">Retore</button>
+                                                            </form>
                                                         @endif
-                                                        
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -130,36 +137,37 @@
                                     </div>
                                 @endif
                                 @if (session()->has('edit'))
-                                <div class="msgpopup">
-                                    <div
-                                        class="alert alert-success bg-primary text-light border-0 alert-dismissible fade show text-center">
-                                        {{ session('edit') }}
+                                    <div class="msgpopup">
+                                        <div
+                                            class="alert alert-success bg-primary text-light border-0 alert-dismissible fade show text-center">
+                                            {{ session('edit') }}
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
                                 @if (session()->has('delete'))
-                                <div class="msgpopup">
-                                    <div
-                                        class="alert alert-success bg-danger text-light border-0 alert-dismissible fade show text-center">
-                                        {{ session('delete') }}
+                                    <div class="msgpopup">
+                                        <div
+                                            class="alert alert-success bg-danger text-light border-0 alert-dismissible fade show text-center">
+                                            {{ session('delete') }}
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
                             </div>
                             @if (session()->has('Restore'))
-                            <div class="msgpopup">
-                                <div
-                                    class="alert alert-success bg-warning text-dark border-0 alert-dismissible fade show text-center">
-                                    {{ session('Restore') }}
+                                <div class="msgpopup">
+                                    <div
+                                        class="alert alert-success bg-warning text-dark border-0 alert-dismissible fade show text-center">
+                                        {{ session('Restore') }}
+                                    </div>
                                 </div>
-                            </div>
-                        @endif
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+   
 </body>
 
 </html>

@@ -20,11 +20,18 @@ class CompanyController extends Controller
      * Summary of index
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = Company::withTrashed()->paginate(10);// Paginate the companies, with 10   companies per page
+        $query = Company::withTrashed();
+
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $companies = $query->paginate(10); // Paginate the companies, with 10 companies per page
         $com = $companies->firstItem();
-        return view('companies.index', compact('companies', 'com'));
+
+        return view('companies.index', compact('companies', 'com', 'search'));
     }
 
     /**

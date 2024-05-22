@@ -8,7 +8,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
+use \Yajra\DataTables\Facades\DataTables;
 
 class EmployeeController extends Controller
 {
@@ -19,21 +19,21 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $employees = Employee::query();
+        $employees = Employee::latest()->get();
 
-        if ($request->ajax()) { //  method call
+        if ($request->ajax()) { // method call
             return DataTables::of($employees)
                 ->addIndexColumn()
-                ->addColumn(('company'), function (Employee $employee) {
+                ->addColumn('company', function (Employee $employee) {
                     return $employee->company->name;
                 })
-                ->addColumn("action", function ($row) {
+                ->addColumn('action', function ($row) {
                     $btn = "<a class='btn btn-sm btn-info' href=" . route("employees.show", $row->id) . "> View </a>";
-                    $btn .= "<a  class='btn btn-sm btn-primary 'href=" . route("employees.edit", $row->id) . "> Edit </a>";
+                    $btn .= "<a class='btn btn-sm btn-primary' href=" . route("employees.edit", $row->id) . "> Edit </a>";
                     $btn .= '<form action="' . route('employees.destroy', $row->id) . '" method="POST" class="d-inline">
-                        ' . method_field('DELETE') . csrf_field() . '
-                        <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this employee?\')"> Delete</button>
-                    </form>';
+                    ' . method_field('DELETE') . csrf_field() . '
+                    <button type="submit" class="delete btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this employee?\')"> Delete</button>
+                </form>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -42,6 +42,7 @@ class EmployeeController extends Controller
 
         return view('employees.index');
     }
+
 
     /**
      * Summary of create
