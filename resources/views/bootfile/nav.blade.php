@@ -61,7 +61,7 @@
                </div>
             </div>
          </div>
-         <h2>.</h2>
+         <!-- TOP Nav Bar -->
          <div class="iq-top-navbar">
             <div class="iq-navbar-custom">
                <nav class="navbar navbar-expand-lg navbar-light p-0">
