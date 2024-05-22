@@ -17,7 +17,7 @@
       <link rel="stylesheet" href="{{ asset('css/responsive.css')}}">
    </head>
    <body>
-      <!-- loader Start -->
+
       <div id="loading">
          <div id="loading-center">
          </div>
