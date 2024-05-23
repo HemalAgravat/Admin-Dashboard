@@ -18,29 +18,67 @@
         <div class="text-center mt-4 name">
             LOGIN
         </div>
-        <form class="p-3 mt-3" action="{{ route('login') }}" method="post">
+        <form class="p-3 mt-3" action="{{ route('login') }}" method="post" id="loginForm">
             @csrf
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
-                <input type="email" name="email" id="email" placeholder="Email"value="{{ old('email') }}">
-                @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <input type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
+                <span id="emailError" class="invalid-feedback" role="alert"></span>
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
-                <input type="password" name="password" id="pwd" placeholder="password"value="{{ old('password') }}">
-                @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
+                <input type="password" name="password" id="password" placeholder="Password" value="{{ old('password') }}">
+                <span id="passwordError" class="invalid-feedback" role="alert"></span>
             </div>
-            <button class="btn mt-3">Login</button>
+            <button type="submit" class="btn mt-3">Login</button>
         </form>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                validateForm();
+            });
+
+            emailInput.addEventListener('input', function () {
+                if (!emailInput.value.trim()) {
+                    emailError.textContent = 'Please enter your email';
+                } else {
+                    emailError.textContent = '';
+                }
+            });
+
+            passwordInput.addEventListener('input', function () {
+                if (!passwordInput.value.trim()) {
+                    passwordError.textContent = 'Please enter your password';
+                } else {
+                    passwordError.textContent = '';
+                }
+            });
+
+            function validateForm() {
+                if (!emailInput.value.trim()) {
+                    emailError.textContent = 'Please enter your email';
+                    return;
+                }
+
+                if (!passwordInput.value.trim()) {
+                    passwordError.textContent = 'Please enter your password';
+                    return;
+                }
+
+                form.submit();
+            }
+        });
+    </script>
 </body>
 
 </html>
+    

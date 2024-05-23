@@ -2,97 +2,85 @@
 @include('bootfile.nav')
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Create Company</title>
 </head>
+
 <body>
     <script>
-        function validateForm() {
-            var name = document.getElementById("name").value;
-            var email = document.getElementById("email").value;
-            var logo = document.getElementById("logo").files[0];
-            var website = document.getElementById("website").value;
-            var status = document.getElementById("status").value;
-            var createdDate = document.getElementById("created_at").value;
+        document.addEventListener('DOMContentLoaded', function() {
 
-            var nameError = document.getElementById("name_error");
-            var emailError = document.getElementById("email_error");
-            var logoError = document.getElementById("logo_error");
-            var websiteError = document.getElementById("website_error");
-            var statusError = document.getElementById("status_error");
-            var createdDateError = document.getElementById("created_at_error");
+            const nameField = document.getElementById('name');
+            const emailField = document.getElementById('email');
+            const logoField = document.getElementById('logo');
+            const websiteField = document.getElementById('website');
+            const statusField = document.getElementById('status');
+            const createdAtField = document.getElementById('created_at');
+            const submitBtn = document.querySelector('button[type="submit"]');
 
-            // Clear previous errors
-            nameError.textContent = "";
-            emailError.textContent = "";
-            logoError.textContent = "";
-            websiteError.textContent = "";
-            statusError.textContent = "";
-            createdDateError.textContent = "";
+            //    // Get today's date
+            //    const today = new Date();
+            // const yyyy = today.getFullYear();
+            // const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+            // const dd = String(today.getDate()).padStart(2, '0');
+            // const minDate = `${yyyy}-${mm}-${dd}`;
 
-            var isValid = true;
 
-            if (name.trim() === "") {
-                nameError.textContent = "Please enter Name";
-                isValid = false;
+            nameField.addEventListener('input', validateForm);
+            emailField.addEventListener('input', validateForm);
+            logoField.addEventListener('change', validateForm);
+            websiteField.addEventListener('input', validateForm);
+            statusField.addEventListener('change', validateForm);
+            createdAtField.addEventListener('input', validateForm);
+
+            function validateForm() {
+                let nameValid = nameField.value.trim() !== '';
+                let emailValid = isValidEmail(emailField.value);
+                let logoValid = isImageFile(logoField.files[0]);
+                let websiteValid = isValidUrl(websiteField.value);
+                let statusValid = statusField.value !== '';
+                let createdAtValid = createdAtField.value !== '';
+
+                document.getElementById('nameError').textContent = nameValid ? '' : 'Please enter Name';
+                document.getElementById('emailError').textContent = emailValid ? '' :
+                    'Please enter a valid email address';
+                document.getElementById('logoError').textContent = logoValid ? '' :
+                    'Logo must be in JPEG, PNG, or JPG format';
+                document.getElementById('websiteError').textContent = websiteValid ? '' :
+                'Please enter a valid URL';
+                document.getElementById('status_error').textContent = statusValid ? '' : 'Please select a status';
+                document.getElementById('created_at_error').textContent = createdAtValid ? '' :
+                    'Please select a created date';
+
+                submitBtn.disabled = !(nameValid && emailValid && logoValid && websiteValid && statusValid &&
+                    createdAtValid);
             }
 
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email.trim() !== "" && !emailRegex.test(email)) {
-                emailError.textContent = "Please enter a valid email address";
-                isValid = false;
-            } else if (email.trim() === "") {
-                emailError.textContent = "Please enter an email address";
-                isValid = false;
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
             }
-            
-            if (!logo) {
-                logoError.textContent = "Please upload a logo";
-                isValid = false;
-            } else {
-                var logoSize = logo.size;
-                var minSize = 100 * 100; // Minimum size (100x100)
-                if (logoSize < minSize) {
-                    logoError.textContent = "Minimum logo size is 100x100";
-                    isValid = false;
+
+            function isImageFile(file) {
+                if (!file) return true; // No file selected is also considered valid
+                const validFormats = ["image/jpeg", "image/png", "image/jpg"];
+                return validFormats.includes(file.type);
+            }
+
+
+            function isValidUrl(url) {
+                try {
+                    new URL(url);
+                    return true;
+                } catch (e) {
+                    return false;
                 }
             }
-
-            if (website.trim() === "") {
-                websiteError.textContent = "Please enter Website";
-                isValid = false;
-            } else {
-                var urlRegex =
-                    /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
-                if (!urlRegex.test(website)) {
-                    websiteError.textContent = "Please enter a valid URL";
-                    isValid = false;
-                }
-            }
-
-            if (status.trim() === "") {
-                statusError.textContent = "Please select Status";
-                isValid = false;
-            }
-
-            if (createdDate.trim() === "") {
-                createdDateError.textContent = "Please enter Created Date";
-                isValid = false;
-            } else {
-                var currentDate = new Date();
-                var enteredDate = new Date(createdDate);
-                if (enteredDate > currentDate) {
-                    createdDateError.textContent = "Created Date cannot be in the future";
-                    isValid = false;
-                }
-            }
-            return isValid;
-        }
+        });
     </script>
-
     <div id="content-page" class="content-page">
         <div class="container-fluid">
             <div class="row">
@@ -117,25 +105,25 @@
                                         <label for="name">Name:</label>
                                         <input type="text" name="name" id="name" class="form-control"
                                             value="{{ old('name') }}">
-                                        <span id="name_error" style="color: rgb(251, 134, 88)"></span>
+                                        <span id="nameError" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email:</label>
                                         <input type="email" name="email" id="email" class="form-control"
                                             value="{{ old('email') }}">
-                                        <span id="email_error" style="color: rgb(251, 134, 88)"></span>
+                                        <span id="emailError" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="logo">Logo (minimum 100x100):</label>
                                         <input type="file" name="logo" id="logo" class="form-control-file"
                                             accept="image/*">
-                                        <span id="logo_error" style="color: rgb(251, 134, 88)"></span>
+                                        <span id="logoError" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="website">Website:</label>
                                         <input type="url" name="website" id="website" class="form-control"
                                             value="{{ old('website') }}">
-                                        <span id="website_error" style="color: rgb(251, 134, 88)"></span>
+                                        <span id="websiteError" style="color: rgb(251, 134, 88)"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="status">Status:</label>
@@ -144,15 +132,12 @@
                                                 Active</option>
                                             {{-- <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive</option> --}}
                                         </select>
-                                        <span id="status_error" style="color: rgb(251, 134, 88)"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="created_at">Created Date:</label>
-                                        <input type="date" name="created_at" id="created_at" class="form-control"
-                                            value="{{ old('created_at') }}">
-                                        <span id="created_at_error" style="color: rgb(251, 134, 88)"></span>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                        <div class="form-group">
+                                            <label for="created_at">Created Date:</label>
+                                            <input type="date" name="created_at" id="created_at" class="form-control"
+                                                value="{{ old('created_at', date('Y-m-d')) }}">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Create</button>
                                 </form>
                             </div>
                         </div>

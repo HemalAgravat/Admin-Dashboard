@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Yajra\DataTables\Facades\DataTables;
 
+/**
+ * Summary of EmployeeController
+ */
 class EmployeeController extends Controller
 {
     /**
@@ -77,11 +80,20 @@ class EmployeeController extends Controller
      */
     public function edit(string $employee, Request $request)
     {
-
         $companies = Company::all();
-        $employee = Employee::find($employee);
+        $employee = Employee::findOrFail($employee);
+    
+        // Store the current URL in the session if it's different from the current URL
+        $previousUrl = url()->previous();
+        $currentUrl = url()->current();
+        if ($previousUrl !== $currentUrl) {
+            session(['previous_edit' => $previousUrl]);
+        }
+    
         return view('employees.edit', compact('employee', 'companies'));
     }
+    
+    
     /**
      * Summary of show
      * @param mixed $id
@@ -104,23 +116,28 @@ class EmployeeController extends Controller
         // Validate the request data
         $validatedData = $request->validated();
         $employee = Employee::findOrFail($id);
-
+    
         // Check if the provided email already exists for another employee
         $existingEmployee = Employee::where('email', $validatedData['email'])
             ->where('id', '!=', $id)
             ->first();
-
+    
         // If an employee with the same email exists and has a different ID,
         // then return with an error message
         if ($existingEmployee) {
             return redirect()->back()->withErrors(['email' => 'The email address is already taken.'])->withInput();
         }
-
+    
         // Update the employee record
         $employee->update($validatedData);
-
-        return redirect()->route('employees.index')->with('edit', 'Employee updated successfully!');
+    
+        // Retrieve the previous URL from the session
+        $previousUrl = session('previous_edit', route('employees.index')); // Default to employees.index if not set
+    
+        // Redirect to the previously stored URL with a success message
+        return redirect($previousUrl)->with('edit', 'Employee updated successfully!');
     }
+    
 
     /**
      * Summary of destroy

@@ -24,7 +24,7 @@ class ComUpdateRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            //'logo' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100', // Adjust maximum file size as needed
+            'logo' => 'image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100', // Adjust maximum file size as needed
             'website' => 'nullable|url|max:255',
             // 'status' => 'required|in:active,inactive',
      

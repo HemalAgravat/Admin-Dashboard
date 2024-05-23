@@ -8,61 +8,59 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Edit Employee</title>
     <script>
-        function validateForm() {
-            var firstName = document.getElementById("first_name").value;
-            var lastName = document.getElementById("last_name").value;
-            // var company = document.getElementById("company_id").value;
-            var email = document.getElementById("email").value;
-            var phone = document.getElementById("phone").value;
+         document.addEventListener('DOMContentLoaded', function () {
+            const firstNameField = document.getElementById('first_name');
+            const lastNameField = document.getElementById('last_name');
+            const emailField = document.getElementById('email');
+            const phoneField = document.getElementById('phone');
+            const submitBtn = document.querySelector('button[type="submit"]');
 
-            var firstNameError = document.getElementById("first_name_error");
-            var lastNameError = document.getElementById("last_name_error");
-            // var companyError = document.getElementById("company_id_error");
-            var emailError = document.getElementById("email_error");
-            var phoneError = document.getElementById("phone_error");
+            firstNameField.addEventListener('input', validateForm);
+            lastNameField.addEventListener('input', validateForm);
+            emailField.addEventListener('input', validateForm);
+            phoneField.addEventListener('input', validateForm);
 
-            firstNameError.textContent = "";
-            lastNameError.textContent = "";
-            // companyError.textContent = "";
-            emailError.textContent = "";
-            phoneError.textContent = "";
+            function validateForm() {
+                let isValid = true;
 
-            var isValid = true;
+                const firstName = firstNameField.value.trim();
+                const lastName = lastNameField.value.trim();
+                const email = emailField.value.trim();
+                const phone = phoneField.value.trim();
 
-            if (firstName.trim() === "") {
-                firstNameError.textContent = "Please enter First Name";
-                isValid = false;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const phoneRegex = /^\d{10}$/;
+
+                document.getElementById('first_name_error').textContent = firstName ? '' : 'Please enter First Name';
+                document.getElementById('last_name_error').textContent = lastName ? '' : 'Please enter Last Name';
+
+                if (!email) {
+                    document.getElementById('email_error').textContent = 'Please enter an email address';
+                    isValid = false;
+                } else if (!emailRegex.test(email)) {
+                    document.getElementById('email_error').textContent = 'Please enter a valid email address';
+                    isValid = false;
+                } else {
+                    document.getElementById('email_error').textContent = '';
+                }
+
+                if (!phone) {
+                    document.getElementById('phone_error').textContent = 'Please enter a phone number';
+                    isValid = false;
+                } else if (!phoneRegex.test(phone)) {
+                    document.getElementById('phone_error').textContent = 'Please enter a valid 10-digit phone number';
+                    isValid = false;
+                } else {
+                    document.getElementById('phone_error').textContent = '';
+                }
+
+                submitBtn.disabled = !isValid;
+                return isValid;
             }
 
-            if (lastName.trim() === "") {
-                lastNameError.textContent = "Please enter Last Name";
-                isValid = false;
-            }
-
-            // if (company.trim() === "") {
-            //     companyError.textContent = "Please select a Company";
-            //     isValid = false;
-            // }
-            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email.trim() !== "" && !emailRegex.test(email)) {
-                emailError.textContent = "Please enter a valid email address";
-                isValid = false;
-            } else if (email.trim() === "") {
-                emailError.textContent = "Please enter an email address";
-                isValid = false;
-            }
-
-            var phoneRegex = /^\d{10}$/;
-            if (phone.trim() !== "" && !phoneRegex.test(phone)) {
-                phoneError.textContent = "Please enter a valid 10-digit phone number";
-                isValid = false;
-            } else if (phone.trim() === "") {
-                phoneError.textContent = "Please enter a phone number";
-                isValid = false;
-            }
-
-            return isValid;
-        }
+            // Initial validation check in case there are pre-filled values
+            validateForm();
+        });
     </script>
 
 </head>

@@ -43,8 +43,9 @@
                                     <div class="mb-3">
                                         <label for="company_id" class="form-label">Company</label>
                                         <select class="form-control" id="company_id" name="company_id">
+                                            <option value="" selected>Company default</option>
                                             @foreach ($com as $item)
-                                                <option value="" selected>Company default</option>
+                                               
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
@@ -53,115 +54,145 @@
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" class="form-control " id="email" name="email">
-                                        <span id="emailerror" style="color: rgb(65, 1, 156)"></span>
+                                        <span id="email_error" style="color: rgb(65, 1, 156)"></span>
 
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="phone" class="form-label">Phone</label>
                                         <input type="text" class="form-control"id="phone" name="phone">
-                                        <span id="phoneerror" style="color: rgb(65, 1, 156)"></span>
+                                        <span id="phone_error" style="color: rgb(65, 1, 156)"></span>
 
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </form>
+                                    <button type="submit" class="btn btn-primary" id="submit-btn">Submit</button>                                </form>
                                 <script>
-                                    $(document).ready(function() {
-                                        // Validation on form submit (pressing Enter)
-                                        $('#employee-form').submit(function(event) {
-                                            event.preventDefault(); // Prevent the default form submission
-                                            validateForm(); // Call your validation function
+                                
+
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                        const form = document.getElementById('employee-form');
+                                        const firstNameField = document.getElementById('first_name');
+                                        const lastNameField = document.getElementById('last_name');
+                                        const companyField = document.getElementById('company_id');
+                                        const emailField = document.getElementById('email');
+                                        const phoneField = document.getElementById('phone');
+                                        const submitBtn = document.getElementById('submit-btn');
+
+                                        // Event listeners for blur events to show error messages
+                                        firstNameField.addEventListener('blur', function() { showError(firstNameField, 'first_name_error'); });
+                                        lastNameField.addEventListener('blur', function() { showError(lastNameField, 'last_name_error'); });
+                                        companyField.addEventListener('blur', function() { showError(companyField, 'company_id_error'); });
+                                        emailField.addEventListener('blur', function() { showError(emailField, 'email_error'); });
+                                        phoneField.addEventListener('blur', function() { showError(phoneField, 'phone_error'); });
+
+                                        // Event listeners for input events to validate form without showing errors
+                                        firstNameField.addEventListener('input', validateForm);
+                                        lastNameField.addEventListener('input', validateForm);
+                                        companyField.addEventListener('input', validateForm);
+                                        emailField.addEventListener('input', validateForm);
+                                        phoneField.addEventListener('input', validateForm);
+
+                                        form.addEventListener('submit', function(event) {
+                                            if (!validateForm(true)) {
+                                                event.preventDefault();
+                                            }
                                         });
 
-                                        // DataTable initialization code
-                                        $('#employee-table').DataTable({
-                                            processing: true,
-                                            serverSide: true,
-                                            ajax: "{{ route('employees.index') }}",
-                                            columns: [{
-                                                    data: 'first_name',
-                                                    name: 'first_name'
-                                                },
-                                                {
-                                                    data: 'last_name',
-                                                    name: 'last_name'
-                                                },
-                                                {
-                                                    data: 'email',
-                                                    name: 'email'
-                                                },
-                                                {
-                                                    data: 'phone',
-                                                    name: 'phone'
-                                                },
-                                                {
-                                                    data: 'action',
-                                                    name: 'action',
-                                                    orderable: false,
-                                                    searchable: false
+                                        function showError(field, errorFieldId) {
+                                            const errorField = document.getElementById(errorFieldId);
+                                            const value = field.value.trim();
+                                            let errorMessage = '';
+
+                                            if (field.id === 'email') {
+                                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                                if (!value) {
+                                                    errorMessage = 'Please enter an email address';
+                                                } else if (!emailRegex.test(value)) {
+                                                    errorMessage = 'Please enter a valid email address';
                                                 }
-                                            ]
-                                        });
+                                            } else if (field.id === 'phone') {
+                                                const phoneRegex = /^\d{10}$/;
+                                                if (!value) {
+                                                    errorMessage = 'Please enter a phone number';
+                                                } else if (!phoneRegex.test(value)) {
+                                                    errorMessage = 'Please enter a valid 10-digit phone number';
+                                                }
+                                            } else {
+                                                if (!value) {
+                                                    errorMessage = `Please enter ${field.labels[0].innerText}`;
+                                                }
+                                            }
+
+                                            errorField.textContent = errorMessage;
+                                        }
+
+                                        function validateForm(showErrors = false) {
+                                            let isValid = true;
+
+                                            const firstName = firstNameField.value.trim();
+                                            const lastName = lastNameField.value.trim();
+                                            const company = companyField.value.trim();
+                                            const email = emailField.value.trim();
+                                            const phone = phoneField.value.trim();
+
+                                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                            const phoneRegex = /^\d{10}$/;
+
+                                            if (!firstName && showErrors) {
+                                                document.getElementById('first_name_error').textContent = 'Please enter First Name';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('first_name_error').textContent = '';
+                                            }
+
+                                            if (!lastName && showErrors) {
+                                                document.getElementById('last_name_error').textContent = 'Please enter Last Name';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('last_name_error').textContent = '';
+                                            }
+
+                                            if (!company && showErrors) {
+                                                document.getElementById('company_id_error').textContent = 'Please select a Company';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('company_id_error').textContent = '';
+                                            }
+
+                                            if (!email) {
+                                                if (showErrors) {
+                                                    document.getElementById('email_error').textContent = 'Please enter an email address';
+                                                }
+                                                isValid = false;
+                                            } else if (!emailRegex.test(email)) {
+                                                if (showErrors) {
+                                                    document.getElementById('email_error').textContent = 'Please enter a valid email address';
+                                                }
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('email_error').textContent = '';
+                                            }
+
+                                            if (!phone) {
+                                                if (showErrors) {
+                                                    document.getElementById('phone_error').textContent = 'Please enter a phone number';
+                                                }
+                                                isValid = false;
+                                            } else if (!phoneRegex.test(phone)) {
+                                                if (showErrors) {
+                                                    document.getElementById('phone_error').textContent = 'Please enter a valid 10-digit phone number';
+                                                }
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('phone_error').textContent = '';
+                                            }
+
+                                            submitBtn.disabled = !isValid;
+                                            return isValid;
+                                        }
+
+                                        // Initial validation check without showing errors
+                                        validateForm();
                                     });
-
-                                    function validateForm() {
-                                        var firstName = document.getElementById("first_name").value;
-                                        var lastName = document.getElementById("last_name").value;
-                                        var company = document.getElementById('company_id').value;
-                                        var email = document.getElementById("email").value;
-                                        var phone = document.getElementById("phone").value;
-
-                                        var firstNameError = document.getElementById("first_name_error");
-                                        var lastNameError = document.getElementById("last_name_error");
-                                        var companyError = document.getElementById("company_id_error");
-                                        var emailError = document.getElementById("emailerror");
-                                        var phoneError = document.getElementById("phoneerror");
-
-                                        // Clear previous errors
-                                        firstNameError.textContent = "";
-                                        lastNameError.textContent = "";
-                                        companyError.textContent = "";
-                                        emailError.textContent = "";
-                                        phoneError.textContent = "";
-
-                                        var isValid = true;
-
-                                        if (firstName.trim() === "") {
-                                            firstNameError.textContent = "Please enter First Name";
-                                            isValid = false;
-                                        }
-
-                                        if (lastName.trim() === "") {
-                                            lastNameError.textContent = "Please enter Last Name";
-                                            isValid = false;
-                                        }
-
-                                        if (company.trim() === "") {
-                                            companyError.textContent = "Please select a Company";
-                                            isValid = false;
-                                        }
-
-                                        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                                        if (email.trim() !== "" && !emailRegex.test(email)) {
-                                            emailError.textContent = "Please enter a valid email address";
-                                            isValid = false;
-                                        } else if (email.trim() === "") {
-                                            emailError.textContent = "Please enter an email address";
-                                            isValid = false;
-                                        }
-
-                                        var phoneRegex = /^\d{10}$/;
-                                        if (phone.trim() !== "" && !phoneRegex.test(phone)) {
-                                            phoneError.textContent = "Please enter a valid 10-digit phone number";
-                                            isValid = false;
-                                        } else if (phone.trim() === "") {
-                                            phoneError.textContent = "Please enter a phone number";
-                                            isValid = false;
-                                        }
-                                        if (isValid) {
-                                            document.getElementById('employee-form').submit();
-                                        }
-                                    }
                                 </script>
                             </div>
                         </div>
