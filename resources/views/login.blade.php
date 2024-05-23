@@ -18,20 +18,34 @@
         <div class="text-center mt-4 name">
             LOGIN
         </div>
+       
         <form class="p-3 mt-3" action="{{ route('login') }}" method="post" id="loginForm">
             @csrf
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
                 <input type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
                 <span id="emailError" class="invalid-feedback" role="alert"></span>
+                @if($errors->has('email'))
+           <div class="alert alert-danger">{{ $errors->first('email') }}</div>
+           @endif
+
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
                 <input type="password" name="password" id="password" placeholder="Password" value="{{ old('password') }}">
                 <span id="passwordError" class="invalid-feedback" role="alert"></span>
+                <!-- Display Password Errors -->
+           @if($errors->has('password'))
+           <div class="alert alert-danger">{{ $errors->first('password') }}</div>
+           @endif
+                
             </div>
+         
+           
+           
             <button type="submit" class="btn mt-3">Login</button>
         </form>
+        
     </div>
     
     <script>
